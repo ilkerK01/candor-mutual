@@ -296,7 +296,7 @@ function GroupPanel(props: {
   if (!state)
     return (
       <article className="card empty">
-        <img src="/img/empty.webp" alt="" width="140" height="140" />
+        <img src="/img/empty.webp" alt="" width="260" height="230" />
         <p className="muted">Open your invite link, or paste a group address above.</p>
       </article>
     );
@@ -388,7 +388,7 @@ function MatchesPanel({ state, self, matches }: { state: GroupState | null; self
   if (!state || !self)
     return (
       <article className="card empty">
-        <img src="/img/empty.webp" alt="" width="140" height="140" />
+        <img src="/img/empty.webp" alt="" width="260" height="230" />
         <p className="muted">{state ? 'Join this group to see your matches.' : 'Open a group to see your matches.'}</p>
       </article>
     );
