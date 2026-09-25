@@ -253,7 +253,7 @@ export default function App() {
   );
 }
 
-const people = ['Ayşe', 'Deniz', 'Mert'];
+const people = ['Emma', 'Noah', 'Liam'];
 
 function Moon({ phase }: { phase: number }) {
   const r = 26;
@@ -290,7 +290,7 @@ function StoryStage({ at }: { at: number }) {
       ) : (
         <ul className="mock-list fade" key="list">
           {people.map((name) => {
-            const target = name === 'Deniz';
+            const target = name === 'Noah';
             const state = target && at === 3 ? 'match' : target && at === 2 ? 'sealed' : '';
             return (
               <li key={name} className={state}>
@@ -303,8 +303,8 @@ function StoryStage({ at }: { at: number }) {
             );
           })}
           <li className={`you${at === 1 ? ' fresh' : ''}`}>
-            <span className="av">E</span>
-            <span className="nm">Elif (you)</span>
+            <span className="av">A</span>
+            <span className="nm">Ava (you)</span>
             {at === 1 && <span className="tag-new">Joined</span>}
           </li>
         </ul>
@@ -314,7 +314,7 @@ function StoryStage({ at }: { at: number }) {
         <span className="lbl">What the chain sees</span>
         <code>
           {at === 0 && 'hash(invite) · spent on use'}
-          {at === 1 && 'Elif · public key 0x7c1e…a94d'}
+          {at === 1 && 'Ava · public key 0x7c1e…a94d'}
           {at === 2 && 'tag 9f3a…41c2 · membership proof ✓'}
           {at === 3 && 'matches: 1 · names: none'}
         </code>
