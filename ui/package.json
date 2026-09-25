@@ -1,0 +1,23 @@
+{
+  "name": "candor-mutual-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "assets": "mkdir -p ./public/keys ./public/zkir && cp -r ../contract/managed/mutual/keys/* ./public/keys/ && cp -r ../contract/managed/mutual/zkir/* ./public/zkir/",
+    "dev": "npm run assets && vite",
+    "build": "npm run assets && tsc && vite build --mode preprod",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "candor-mutual-contract": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/semver": "^7.7.1"
+  }
+}
