@@ -1,0 +1,127 @@
+pragma language_version >= 0.20;
+
+import CompactStandardLibrary;
+
+export enum Round {
+  OPEN,
+  CLOSED
+}
+
+export struct Member {
+  name: Bytes<32>;
+  key: JubjubPoint;
+}
+
+export ledger groupName: Bytes<32>;
+export ledger host: Bytes<32>;
+export ledger round: Round;
+export ledger invites: Set<Bytes<32>>;
+export ledger members: HistoricMerkleTree<10, Bytes<32>>;
+export ledger directory: Map<Bytes<32>, Member>;
+export ledger memberCount: Counter;
+export ledger picks: Set<Bytes<32>>;
+export ledger nullifiers: Set<Bytes<32>>;
+export ledger matches: Set<Bytes<32>>;
+export ledger pickCount: Counter;
+export ledger matchCount: Counter;
+
+witness localSecretKey(): Bytes<32>;
+witness findMemberPath(leaf: Bytes<32>): MerkleTreePath<10, Bytes<32>>;
+
+constructor(name: Bytes<32>) {
+  groupName = disclose(name);
+  host = disclose(hostKey(localSecretKey()));
+  round = Round.OPEN;
+}
+
+export circuit hostKey(sk: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<2, Bytes<32>>>([pad(32, "candor:mutual:host:"), sk]);
+}
+
+export circuit inviteHash(code: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<2, Bytes<32>>>([pad(32, "candor:mutual:invite:"), code]);
+}
+
+export circuit publicKeyOf(sk: Bytes<32>): JubjubPoint {
+  return ecMulGenerator(degradeToTransient(sk));
+}
+
+export circuit memberId(key: JubjubPoint): Bytes<32> {
+  return persistentHash<Vector<3, Bytes<32>>>([
+    pad(32, "candor:mutual:member:"),
+    upgradeFromTransient(jubjubPointX(key)),
+    upgradeFromTransient(jubjubPointY(key))
+  ]);
+}
+
+export circuit pairTag(sk: Bytes<32>, other: JubjubPoint, group: Bytes<32>): Bytes<32> {
+  const shared = ecMul(other, degradeToTransient(sk));
+  const pair = degradeToTransient(memberId(publicKeyOf(sk))) + degradeToTransient(memberId(other));
+  return persistentHash<Vector<5, Bytes<32>>>([
+    pad(32, "candor:mutual:tag:"),
+    group,
+    upgradeFromTransient(jubjubPointX(shared)),
+    upgradeFromTransient(jubjubPointY(shared)),
+    upgradeFromTransient(pair)
+  ]);
+}
+
+export circuit pickNullifier(sk: Bytes<32>, tag: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<3, Bytes<32>>>([pad(32, "candor:mutual:pick:"), tag, sk]);
+}
+
+circuit onlyHost(): [] {
+  assert(host == hostKey(localSecretKey()), "only the group host can do this");
+}
+
+export circuit invite(codeHash: Bytes<32>): [] {
+  onlyHost();
+  assert(round == Round.OPEN, "this round is closed");
+  const h = disclose(codeHash);
+  assert(!invites.member(h), "this invite already exists");
+  invites.insert(h);
+}
+
+export circuit join(code: Bytes<32>, name: Bytes<32>): [] {
+  assert(round == Round.OPEN, "this round is closed");
+  const h = disclose(inviteHash(code));
+  assert(invites.member(h), "invite code is not valid or was already used");
+  invites.remove(h);
+
+  const key = publicKeyOf(localSecretKey());
+  const id = disclose(memberId(key));
+  assert(!directory.member(id), "you are already in this group");
+  directory.insert(id, Member { name: disclose(name), key: disclose(key) });
+  members.insert(id);
+  memberCount.increment(1);
+}
+
+export circuit choose(target: JubjubPoint): [] {
+  assert(round == Round.OPEN, "this round is closed");
+
+  const sk = localSecretKey();
+  const id = memberId(publicKeyOf(sk));
+  const path = findMemberPath(id);
+  assert(path.leaf == id, "member path does not match your key");
+  assert(members.checkRoot(disclose(merkleTreePathRoot<10, Bytes<32>>(path))), "you are not a member of this group");
+  assert(memberId(target) != id, "you cannot pick yourself");
+
+  const tag = disclose(pairTag(sk, target, groupName));
+  const nul = disclose(pickNullifier(sk, tag));
+  assert(!nullifiers.member(nul), "you have already picked this person");
+  nullifiers.insert(nul);
+  pickCount.increment(1);
+
+  if (picks.member(tag)) {
+    matches.insert(tag);
+    matchCount.increment(1);
+  } else {
+    picks.insert(tag);
+  }
+}
+
+export circuit closeRound(): [] {
+  onlyHost();
+  assert(round == Round.OPEN, "this round is already closed");
+  round = Round.CLOSED;
+}
