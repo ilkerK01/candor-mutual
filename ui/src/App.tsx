@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { loadSecret } from './identity';
 import { connectWallet, readDust, type WalletSession } from './wallet';
 import { Ico, Sprite, errorText, scrollToId, shorten } from './common';
@@ -188,23 +188,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className="how" id="how">
-          <div className="wrap">
-            <div className="head reveal">
-              <p className="eyebrow">How it works</p>
-              <h2>Four steps, no first move</h2>
-            </div>
-            <ol className="steps">
-              {steps.map(([n, title, text]) => (
-                <li className="reveal" key={n}>
-                  <span className="num">{n}</span>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
+        <HowSteps />
 
         <section className="proofs">
           <div className="wrap">
@@ -266,5 +250,103 @@ export default function App() {
         </div>
       </footer>
     </>
+  );
+}
+
+function HowSteps() {
+  const ref = useRef<HTMLElement>(null);
+  const [active, setActive] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [still] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  useEffect(() => {
+    if (still) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const travel = el.offsetHeight - window.innerHeight;
+      const p = Math.min(1, Math.max(0, -rect.top / Math.max(1, travel)));
+      setProgress(p);
+      setActive(Math.min(steps.length - 1, Math.floor(p * steps.length)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [still]);
+
+  const jump = (i: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const travel = el.offsetHeight - window.innerHeight;
+    window.scrollTo({ top: el.offsetTop + travel * ((i + 0.5) / steps.length), behavior: 'smooth' });
+  };
+
+  if (still)
+    return (
+      <section className="how" id="how">
+        <div className="wrap">
+          <div className="head">
+            <p className="eyebrow">How it works</p>
+            <h2>Four steps, no first move</h2>
+          </div>
+          <ol className="steps">
+            {steps.map(([n, title, text]) => (
+              <li key={n}>
+                <span className="num">{n}</span>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    );
+
+  const [n, title, text] = steps[active];
+  return (
+    <section className="how how-scroll" id="how" ref={ref} style={{ height: `${steps.length * 90 + 40}vh` }}>
+      <div className="how-pin">
+        <div className="wrap how-grid">
+          <div className="how-side">
+            <p className="eyebrow">How it works</p>
+            <h2>Four steps, no first move</h2>
+            <ol className="how-list" aria-label="Steps">
+              {steps.map(([num, t], i) => (
+                <li key={num} className={i === active ? 'on' : i < active ? 'done' : ''}>
+                  <button onClick={() => jump(i)} aria-current={i === active ? 'step' : undefined}>
+                    <span className="k">{num}</span>
+                    <span>{t}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+            <div className="how-bar" aria-hidden="true">
+              <i style={{ transform: `scaleX(${progress})` }} />
+            </div>
+          </div>
+          <div className="how-stage" aria-live="polite">
+            <article className="how-card" key={n}>
+              <span className="big-num">{n}</span>
+              <h3>{title}</h3>
+              <p>{text}</p>
+              <span className="count">
+                Step {active + 1} of {steps.length}
+              </span>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
