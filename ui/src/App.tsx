@@ -29,11 +29,11 @@ const scenes = [
   },
 ];
 
-const steps: [string, string, string][] = [
-  ['01', 'Get a one-time invite', 'The group host issues invite links. Only a hash of each code goes on-chain, and every code works once.'],
-  ['02', 'Join under your name', 'Your display name and a public key go into the group directory so people can find you. Your secret key never leaves this browser.'],
-  ['03', 'Seal your picks', 'Pick anyone you would say yes to. The chain gets a membership proof and an opaque tag that only the two of you could ever compute.'],
-  ['04', 'Open only if mutual', 'When the other person seals the same pair, the tags collide and the contract records a match that only the two of you can recognise.'],
+const story: [string, string][] = [
+  ['An invite arrives', 'Your host sends a one-time link. Only a hash of the code lives on-chain, and the code stops working the moment you use it.'],
+  ['You join under your name', 'Your name and a public key go into the group directory so people can find you. The secret behind that key never leaves this browser.'],
+  ['You seal a pick', 'Choose anyone you would say yes to. The chain receives a proof that you belong to the group and a tag that only the two of you could ever compute.'],
+  ['It opens only if it is mutual', 'When they seal the same pair, the tags meet and the contract records a match. Everyone else sees a number. The two of you see each other.'],
 ];
 
 const proofs: [string, string, string][] = [
@@ -188,7 +188,7 @@ export default function App() {
           </div>
         </section>
 
-        <HowSteps />
+        <HowStory />
 
         <section className="proofs">
           <div className="wrap">
@@ -253,24 +253,98 @@ export default function App() {
   );
 }
 
-function HowSteps() {
-  const ref = useRef<HTMLElement>(null);
-  const [active, setActive] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [still] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const people = ['Ayşe', 'Deniz', 'Mert'];
+
+function Moon({ phase }: { phase: number }) {
+  const r = 26;
+  const k = Math.cos(Math.PI * phase);
+  const rx = Math.abs(k) * r;
+  const lit = phase <= 0.001 ? '' : phase >= 0.999
+    ? `M30 4 A${r} ${r} 0 1 1 30 56 A${r} ${r} 0 1 1 30 4 Z`
+    : `M30 4 A${r} ${r} 0 0 1 30 56 A${rx} ${r} 0 0 ${k > 0 ? 0 : 1} 30 4 Z`;
+  return (
+    <svg className="moon" viewBox="0 0 60 60" aria-hidden="true">
+      <circle cx="30" cy="30" r={r} className="moon-dark" />
+      {lit && <path d={lit} className="moon-lit" />}
+      <circle cx="30" cy="30" r={r} className="moon-rim" />
+    </svg>
+  );
+}
+
+function StoryStage({ at }: { at: number }) {
+  return (
+    <div className="mock" data-at={at}>
+      <div className="mock-top">
+        <Ico id="i-mark" className="mock-mark" />
+        <span>Dorm B · Fall 2026</span>
+        <span className="mock-pill">{at === 0 ? 'Invite' : '4 members'}</span>
+      </div>
+
+      {at === 0 ? (
+        <div className="mock-body fade" key="invite">
+          <p className="mock-title">You're invited</p>
+          <p className="mock-sub">Your host shared a one-time link with you.</p>
+          <code className="mock-link">candor.app/?invite=k7qm-2xva-p9dr</code>
+          <span className="mock-btn">Join the group</span>
+        </div>
+      ) : (
+        <ul className="mock-list fade" key="list">
+          {people.map((name) => {
+            const target = name === 'Deniz';
+            const state = target && at === 3 ? 'match' : target && at === 2 ? 'sealed' : '';
+            return (
+              <li key={name} className={state}>
+                <span className="av">{name[0]}</span>
+                <span className="nm">{name}</span>
+                {state === 'sealed' && <span className="seal" aria-label="Sealed pick" />}
+                {state === 'match' && <span className="tag-match">It's mutual</span>}
+                {!state && at >= 2 && <span className="ghost">Pick</span>}
+              </li>
+            );
+          })}
+          <li className={`you${at === 1 ? ' fresh' : ''}`}>
+            <span className="av">E</span>
+            <span className="nm">Elif (you)</span>
+            {at === 1 && <span className="tag-new">Joined</span>}
+          </li>
+        </ul>
+      )}
+
+      <div className="mock-chain">
+        <span className="lbl">What the chain sees</span>
+        <code>
+          {at === 0 && 'hash(invite) · spent on use'}
+          {at === 1 && 'Elif · public key 0x7c1e…a94d'}
+          {at === 2 && 'tag 9f3a…41c2 · membership proof ✓'}
+          {at === 3 && 'matches: 1 · names: none'}
+        </code>
+      </div>
+    </div>
+  );
+}
+
+function HowStory() {
+  const [at, setAt] = useState(0);
+  const [phase, setPhase] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (still) return;
     let frame = 0;
     const update = () => {
       frame = 0;
       const el = ref.current;
       if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const travel = el.offsetHeight - window.innerHeight;
-      const p = Math.min(1, Math.max(0, -rect.top / Math.max(1, travel)));
-      setProgress(p);
-      setActive(Math.min(steps.length - 1, Math.floor(p * steps.length)));
+      const blocks = Array.from(el.querySelectorAll<HTMLElement>('.story-step'));
+      const mid = window.innerHeight * (window.innerWidth < 960 ? 0.8 : 0.55);
+      const tops = blocks.map((b) => b.getBoundingClientRect().top);
+      let current = 0;
+      tops.forEach((t, i) => {
+        if (t < mid) current = i;
+      });
+      setAt(current);
+      const next = tops[current + 1];
+      const within = next === undefined ? 1 : Math.min(1, Math.max(0, (mid - tops[current]) / Math.max(1, next - tops[current])));
+      setPhase(Math.min(1, (current + (tops[0] < mid ? within : 0)) / (blocks.length - 1)));
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);
@@ -283,67 +357,32 @@ function HowSteps() {
       window.removeEventListener('resize', onScroll);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, [still]);
+  }, []);
 
-  const jump = (i: number) => {
-    const el = ref.current;
-    if (!el) return;
-    const travel = el.offsetHeight - window.innerHeight;
-    window.scrollTo({ top: el.offsetTop + travel * ((i + 0.5) / steps.length), behavior: 'smooth' });
-  };
-
-  if (still)
-    return (
-      <section className="how" id="how">
-        <div className="wrap">
-          <div className="head">
-            <p className="eyebrow">How it works</p>
-            <h2>Four steps, no first move</h2>
-          </div>
-          <ol className="steps">
-            {steps.map(([n, title, text]) => (
-              <li key={n}>
-                <span className="num">{n}</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-    );
-
-  const [n, title, text] = steps[active];
   return (
-    <section className="how how-scroll" id="how" ref={ref} style={{ height: `${steps.length * 90 + 40}vh` }}>
-      <div className="how-pin">
-        <div className="wrap how-grid">
-          <div className="how-side">
-            <p className="eyebrow">How it works</p>
-            <h2>Four steps, no first move</h2>
-            <ol className="how-list" aria-label="Steps">
-              {steps.map(([num, t], i) => (
-                <li key={num} className={i === active ? 'on' : i < active ? 'done' : ''}>
-                  <button onClick={() => jump(i)} aria-current={i === active ? 'step' : undefined}>
-                    <span className="k">{num}</span>
-                    <span>{t}</span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-            <div className="how-bar" aria-hidden="true">
-              <i style={{ transform: `scaleX(${progress})` }} />
+    <section className="how" id="how">
+      <div className="wrap">
+        <div className="head">
+          <p className="eyebrow">How it works</p>
+          <h2>From a sealed pick to a full moon</h2>
+        </div>
+        <div className="story" ref={ref}>
+          <div className="story-visual">
+            <div className="story-sticky">
+              <StoryStage at={at} />
+              <div className="moon-row">
+                <Moon phase={phase} />
+                <span>{at === 3 ? 'Full moon. It opened.' : 'Waxing. Nothing opens until it is mutual.'}</span>
+              </div>
             </div>
           </div>
-          <div className="how-stage" aria-live="polite">
-            <article className="how-card" key={n}>
-              <span className="big-num">{n}</span>
-              <h3>{title}</h3>
-              <p>{text}</p>
-              <span className="count">
-                Step {active + 1} of {steps.length}
-              </span>
-            </article>
+          <div className="story-text">
+            {story.map(([title, text], i) => (
+              <article key={title} className={`story-step${i === at ? ' on' : ''}`}>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </article>
+            ))}
           </div>
         </div>
       </div>
