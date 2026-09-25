@@ -367,6 +367,9 @@ function HowStory() {
           <h2>From a sealed pick to a full moon</h2>
         </div>
         <div className="story" ref={ref}>
+          <div className="story-moon" aria-hidden="true">
+            <img src="/img/moon.webp" alt="" />
+          </div>
           <div className="story-visual">
             <div className="story-sticky">
               <StoryStage at={at} />
