@@ -109,7 +109,7 @@ export default function App() {
       <header className={`nav${scrolled ? ' scrolled' : ''}`}>
         <div className="wrap nav-in">
           <a href="#top" className="brand" aria-label="Candor home">
-            <img src="/img/candor-logo.svg" alt="Candor" height="34" />
+            <img src="/img/candor-logo.svg" alt="Candor" height="48" />
           </a>
           <nav className="nav-links hide-sm" aria-label="Sections">
             <a href="#why">Why</a>
@@ -239,7 +239,7 @@ export default function App() {
 
       <footer className="foot">
         <div className="wrap foot-in">
-          <img src="/img/candor-logo.svg" alt="Candor" height="28" />
+          <img src="/img/candor-logo.svg" alt="Candor" height="40" />
           <p>Say it only if it's mutual. Proven on Midnight, known only to the two of you.</p>
           <nav aria-label="Footer">
             <a href={REPO_URL} target="_blank" rel="noreferrer">GitHub</a>
