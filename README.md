@@ -30,6 +30,21 @@ Inside a verified group (a class, a dorm, a team) each member can privately pick
 
 Built for the Rise In × Midnight **New Moon to Full** program, Level 4. Track: *Consumer & Social*.
 
+## Level 4 Checklist
+
+| Requirement | Status | Where |
+| --- | --- | --- |
+| Approved idea from Idea Submission | ✅ | Mutual-only reveal, approved September 2026 |
+| MVP deployed on Midnight Preprod | ✅ | [`33d0aa8d…7e135`](#contract-address), 7 transactions this month |
+| Contract address in README | ✅ | [Contract Address](#contract-address) |
+| Frontend connected to the contract | ✅ | https://candor-mutual.vercel.app |
+| README with setup instructions | ✅ | [Setup & Run Locally](#setup--run-locally) |
+| Usage documentation | ✅ | [docs/USAGE.md](docs/USAGE.md) |
+| CI/CD | ✅ | [GitHub Actions](https://github.com/ilkerK01/candor-mutual/actions/workflows/ci.yml): compile, circuit diff check, 15 tests, type check, web build |
+| Product X profile | ✅ | [@candormutual](https://x.com/candormutual) |
+| Demo video | ⏳ | Added with the Level 4 submission |
+| 15+ meaningful commits | ✅ | 30+ commits on `main` |
+
 ## Live Demo
 
 **https://candor-mutual.vercel.app**
@@ -82,6 +97,34 @@ The same record is kept in [`deployments/preprod.json`](deployments/preprod.json
 3. **Joining.** A member opens the invite link, picks a display name and joins. The browser generates the member's secret key; the contract stores the public key and adds the member to a Merkle tree.
 4. **Picking.** A member picks someone. The circuit proves membership in the tree without revealing which member is proving, and computes a *pair tag* from a Diffie-Hellman secret that only these two people can derive. The tag goes on-chain. A *nullifier* stops the same person from picking the same target twice.
 5. **The match.** When the second person of a pair picks the first, the circuit produces the same tag. The contract sees it already in the set of picks and records a match. Each member's browser checks the match set against the tags it can compute, so only the pair ever sees who matched.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  subgraph Browser["Member's browser"]
+    UI["Candor web app<br/>React + Vite"]
+    SK[("Secret key<br/>local storage")]
+  end
+  PS["Local proof server<br/>localhost:6300"]
+  Lace["Lace wallet<br/>fees and signing"]
+  subgraph Midnight["Midnight Preprod"]
+    C["Group contract<br/>mutual.compact"]
+    IDX["Indexer<br/>GraphQL"]
+  end
+
+  SK -- witness only --> UI
+  UI -- circuit inputs --> PS
+  PS -- ZK proof --> UI
+  UI -- unbalanced tx --> Lace
+  Lace -- balanced, signed tx --> C
+  C -- ledger state --> IDX
+  IDX -- members, picks, matches --> UI
+```
+
+- **The secret key never leaves the browser.** It enters the circuits only as a witness on the local proof server.
+- **Lace balances the fee and submits the transaction.** The member identity is the key in the browser, not the wallet.
+- **Reads need nothing.** Group state comes straight from the public indexer, and each browser checks the match set against the pair tags it can compute.
 
 ## Privacy Model
 
@@ -193,6 +236,18 @@ docs/         Usage guide and screenshots
 deployments/  Preprod deployment record
 ```
 
+## Program Progress
+
+| Level | Status | Repository |
+| --- | --- | --- |
+| L1 New Moon | ✅ Approved | [anon-course-eval](https://github.com/ilkerK01/anon-course-eval) |
+| L2 Waxing Crescent | ✅ Approved | [anon-course-eval](https://github.com/ilkerK01/anon-course-eval) |
+| L3 First Quarter | ✅ Approved | [anon-course-eval](https://github.com/ilkerK01/anon-course-eval) |
+| Idea Submission | ✅ Approved | Mutual-only reveal |
+| L4 | Submitted with this repository | candor-mutual |
+
+Levels 1 to 3 shipped Candor as anonymous course evaluation. Level 4 builds the approved idea on the same membership and nullifier foundation, under the same name.
+
 ## Roadmap
 
 1. **Pilot groups on Preprod.** Real classes and dorms, feedback form linked from the app.
@@ -211,6 +266,10 @@ deployments/  Preprod deployment record
 - Live app: https://candor-mutual.vercel.app
 - X: https://x.com/candormutual
 - Earlier levels (L1 to L3, anonymous course evaluation under the same Candor name): https://github.com/ilkerK01/anon-course-eval
+
+## Author
+
+Built solo by [@ilkerK01](https://github.com/ilkerK01).
 
 ## License
 
