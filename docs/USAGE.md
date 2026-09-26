@@ -24,7 +24,7 @@ Reading a group (members, pick count, match count) needs none of this. Only writ
 
 The first time you open the app, your browser creates a random secret key and keeps it in local storage. Your public key is derived from it and is what the group sees next to your display name.
 
-- The secret key is **never sent anywhere**. It is used only as a private input to the zero-knowledge proofs.
+- The secret key **never leaves your machine**. It goes only to the proof server on localhost, as a private input to the zero-knowledge proofs.
 - If you clear your browser storage you lose the identity, and with it the ability to see your matches in that group.
 - The wallet pays fees. It is not your identity, so two members can share one wallet without sharing picks.
 

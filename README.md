@@ -101,28 +101,23 @@ The same record is kept in [`deployments/preprod.json`](deployments/preprod.json
 ## Architecture
 
 ```mermaid
-flowchart TB
-  subgraph Browser["Member's browser"]
-    UI["Candor web app<br/>React + Vite"]
-    SK[("Secret key<br/>local storage")]
-  end
-  PS["Local proof server<br/>localhost:6300"]
-  Lace["Lace wallet<br/>fees and signing"]
-  subgraph Midnight["Midnight Preprod"]
-    C["Group contract<br/>mutual.compact"]
-    IDX["Indexer<br/>GraphQL"]
-  end
-
-  SK -- witness only --> UI
-  UI -- circuit inputs --> PS
-  PS -- ZK proof --> UI
-  UI -- unbalanced tx --> Lace
-  Lace -- balanced, signed tx --> C
-  C -- ledger state --> IDX
-  IDX -- members, picks, matches --> UI
+sequenceDiagram
+  autonumber
+  participant B as Browser<br/>(secret key)
+  participant P as Local proof server
+  participant L as Lace wallet
+  participant C as Group contract<br/>(Preprod)
+  participant I as Indexer
+  B->>P: circuit inputs + secret key as witness
+  P-->>B: zero-knowledge proof
+  B->>L: proven transaction
+  L->>C: fee balanced, signed, submitted
+  C->>I: new ledger state
+  I-->>B: members, pair tags, matches
+  B->>B: check matches against the tags only this key can compute
 ```
 
-- **The secret key never leaves the browser.** It enters the circuits only as a witness on the local proof server.
+- **The secret key never leaves the member's machine.** It lives in browser storage and reaches the circuits only as a witness on the proof server running on localhost.
 - **Lace balances the fee and submits the transaction.** The member identity is the key in the browser, not the wallet.
 - **Reads need nothing.** Group state comes straight from the public indexer, and each browser checks the match set against the pair tags it can compute.
 
