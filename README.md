@@ -101,7 +101,7 @@ The same record is kept in [`deployments/preprod.json`](deployments/preprod.json
 ## Architecture
 
 ```mermaid
-flowchart LR
+flowchart TB
   subgraph Browser["Member's browser"]
     UI["Candor web app<br/>React + Vite"]
     SK[("Secret key<br/>local storage")]
