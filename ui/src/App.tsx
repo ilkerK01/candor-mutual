@@ -157,7 +157,7 @@ export default function App() {
             <div className="head reveal">
               <p className="eyebrow">Why it exists</p>
               <h2>The things nobody says first</h2>
-              <p className="lead">Going first costs too much, so everybody waits. Candor removes the first move.</p>
+              <p className="lead">The only cost is the first step, so everybody waits. Candor makes the first step free: if it isn't mutual, it never happened.</p>
             </div>
             <div className="scene-grid">
               {scenes.map((s) => (
@@ -220,6 +220,7 @@ export default function App() {
         <section className="closing">
           <div className="wrap closing-in">
             <div className="reveal">
+              <p className="eyebrow red">Go first without going first</p>
               <h2>Start with your people</h2>
               <p className="lead">
                 Create a group for your class, dorm or team, send each person a one-time invite link, and let everyone pick in
@@ -240,10 +241,11 @@ export default function App() {
       <footer className="foot">
         <div className="wrap foot-in">
           <img src="/img/candor-logo.svg" alt="Candor" height="40" />
-          <p>Say it only if it's mutual. Proven on Midnight, known only to the two of you.</p>
+          <p>Say it only if it's mutual. No risk in asking, no trace if it's not.</p>
           <nav aria-label="Footer">
             <a href={REPO_URL} target="_blank" rel="noreferrer">GitHub</a>
             <a href={`${REPO_URL}/blob/main/docs/USAGE.md`} target="_blank" rel="noreferrer">Usage guide</a>
+            <a href="https://x.com/candormutual" target="_blank" rel="noreferrer">X</a>
             <a href="https://midnight.network" target="_blank" rel="noreferrer">Midnight</a>
           </nav>
           <small>© 2026 Candor · Built for Rise In × Midnight, New Moon to Full</small>
