@@ -1,0 +1,62 @@
+{
+  "network": "preprod",
+  "contractAddress": "33d0aa8d5345780253c02237c0320c81ed982215f7751001003d1e452df7e135",
+  "groupName": "Candor Demo Fall 2026",
+  "compactCompiler": "0.31.1",
+  "circuits": [
+    "invite",
+    "join",
+    "choose",
+    "closeRound"
+  ],
+  "transactions": [
+    {
+      "step": "deploy",
+      "txHash": "aee53ce5de66ea28403e1cc4947f0a4303da64781940aba1ee3a48c27f42db10",
+      "block": 2717055,
+      "timestampUtc": "2026-09-26T10:53:24Z"
+    },
+    {
+      "step": "invite",
+      "txHash": "a7df3133cafb9f6de57d0bcb9ec2652e43aaaa2768eb04d1f129486cbc98b04a",
+      "block": 2717086,
+      "timestampUtc": "2026-09-26T10:56:30Z"
+    },
+    {
+      "step": "invite",
+      "txHash": "8162df69c155e11c734edb011ef0f1af87c7abdbc6a2851bca4efe75e5560723",
+      "block": 2717092,
+      "timestampUtc": "2026-09-26T10:57:06Z"
+    },
+    {
+      "step": "join (Emma)",
+      "txHash": "d7cf61de856e38b29d3846c310286ad5c2eecd636b9b0d0b1eaec992255f4634",
+      "block": 2717118,
+      "timestampUtc": "2026-09-26T10:59:42Z"
+    },
+    {
+      "step": "join (Noah)",
+      "txHash": "c381db59f56353efe9a35357769fb33b73762dec6f1c18457865c5a9f7e7d519",
+      "block": 2717132,
+      "timestampUtc": "2026-09-26T11:01:06Z"
+    },
+    {
+      "step": "choose (Noah picks Emma)",
+      "txHash": "59dfe4f9dd96221a598519a7384ffefb770867394b1dcb4979931d605c1200c1",
+      "block": 2717144,
+      "timestampUtc": "2026-09-26T11:02:18Z"
+    },
+    {
+      "step": "choose (Emma picks Noah, match)",
+      "txHash": "c6323706a94829ae17a62858771b5cdd03903e4bf49c56081f56e76074d6c197",
+      "block": 2717172,
+      "timestampUtc": "2026-09-26T11:05:06Z"
+    }
+  ],
+  "demoMembers": {
+    "note": "Emma and Noah are demo identities created by the author to show the flow, not users",
+    "count": 2
+  },
+  "indexer": "https://indexer.preprod.midnight.network/api/v4/graphql",
+  "liveDemo": "https://candor-mutual.vercel.app/?group=33d0aa8d5345780253c02237c0320c81ed982215f7751001003d1e452df7e135"
+}
