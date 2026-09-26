@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="ui/public/img/candor-logo.svg" alt="Candor" width="280">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="ui/public/img/candor-logo-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="ui/public/img/candor-logo.svg">
+    <img src="ui/public/img/candor-logo.svg" alt="Candor" width="280">
+  </picture>
 </p>
 
 <p align="center"><strong>Say it only if it's mutual.</strong><br>
