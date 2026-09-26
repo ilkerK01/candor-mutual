@@ -10,11 +10,11 @@
 Sealed picks inside verified groups, proven with zero-knowledge on Midnight.</p>
 
 <p align="center">
-  <a href="https://candor-mutual.vercel.app"><img alt="Live demo" src="https://img.shields.io/badge/live%20demo-candor--mutual.vercel.app-E8452C?style=flat-square"></a>
-  <a href="https://github.com/ilkerK01/candor-mutual/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ilkerK01/candor-mutual/actions/workflows/ci.yml/badge.svg"></a>
-  <img alt="Network" src="https://img.shields.io/badge/network-Midnight%20Preprod-111111?style=flat-square">
-  <img alt="Tests" src="https://img.shields.io/badge/tests-15%20passing-2f9e5b?style=flat-square">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-8a8a80?style=flat-square">
+  <a href="https://candor-mutual.vercel.app"><img alt="Live demo" src="https://img.shields.io/badge/live%20demo-candor--mutual.vercel.app-E8452C?style=flat-square"></a><br>
+  <a href="https://github.com/ilkerK01/candor-mutual/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/ilkerK01/candor-mutual/actions/workflows/ci.yml/badge.svg"></a><br>
+  <img alt="Network" src="https://img.shields.io/badge/network-Midnight%20Preprod-111111?style=flat-square"><br>
+  <img alt="Tests" src="https://img.shields.io/badge/tests-15%20passing-2f9e5b?style=flat-square"><br>
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-8a8a80?style=flat-square"><br>
   <a href="https://x.com/candormutual"><img alt="X" src="https://img.shields.io/badge/X-@candormutual-111111?style=flat-square&logo=x"></a>
 </p>
 
