@@ -260,7 +260,7 @@ deployments/  Preprod deployment record
 | L2 Waxing Crescent | ✅ Approved | [anon-course-eval](https://github.com/ilkerK01/anon-course-eval) |
 | L3 First Quarter | ✅ Approved | [anon-course-eval](https://github.com/ilkerK01/anon-course-eval) |
 | Idea Submission | ✅ Approved | Mutual-only reveal |
-| L4 | Submitted with this repository | candor-mutual |
+| L4 Waxing Gibbous | This repository | candor-mutual |
 
 Levels 1 to 3 shipped Candor as anonymous course evaluation. Level 4 builds the approved idea on the same membership and nullifier foundation, under the same name.
 
