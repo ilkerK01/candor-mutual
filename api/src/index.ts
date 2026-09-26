@@ -91,6 +91,9 @@ export const myMatches = (group: GroupState, secretKey: Uint8Array): GroupMember
   );
 };
 
+export const pickOpensMatch = (group: GroupState, secretKey: Uint8Array, target: GroupMember): boolean =>
+  group.ledger.picks.member(Mutual.pureCircuits.pairTag(secretKey, target.key, group.ledger.groupName));
+
 export class MutualAPI {
   readonly contractAddress: ContractAddress;
   readonly state$: Observable<GroupState>;

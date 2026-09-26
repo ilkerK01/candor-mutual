@@ -5,6 +5,7 @@ import {
   memberIdOf,
   myMatches,
   newInviteCode,
+  pickOpensMatch,
   type GroupMember,
   type GroupState,
 } from '../../api/src/index';
@@ -162,8 +163,9 @@ export function MutualApp(props: {
       'You are in. Pick the people you would say yes to.',
     );
 
-  const choose = (member: GroupMember) =>
-    run(
+  const choose = (member: GroupMember) => {
+    const mutual = !!state && pickOpensMatch(state, secret, member);
+    return run(
       `Sending a sealed pick for ${member.name}.`,
       async () => {
         const txId = await (await groupApi()).choose(member.key);
@@ -174,8 +176,11 @@ export function MutualApp(props: {
         });
         return txId;
       },
-      `Your pick is sealed. If ${member.name} picks you too, you will both see the match.`,
+      mutual
+        ? `It's mutual. ${member.name} picked you too, and you can both see the match now.`
+        : `Your pick is sealed. If ${member.name} picks you too, you will both see the match.`,
     );
+  };
 
   const closeRound = () =>
     run('Closing the round.', async () => (await groupApi()).closeRound(), 'The round is closed. Matches stay visible to their pairs.');
