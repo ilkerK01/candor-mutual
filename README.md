@@ -35,7 +35,7 @@ Built for the Rise In × Midnight **New Moon to Full** program, Level 4. Track: 
 | Requirement | Status | Where |
 | --- | --- | --- |
 | Approved idea from Idea Submission | ✅ | Mutual-only reveal, approved September 2026 |
-| MVP deployed on Midnight Preprod | ✅ | [`33d0aa8d…7e135`](#contract-address), 7 transactions this month |
+| MVP deployed on Midnight Preprod | ✅ | [`33d0aa8d…7e135`](#contract-address) and the video group, 14 transactions this month |
 | Contract address in README | ✅ | [Contract Address](#contract-address) |
 | Frontend connected to the contract | ✅ | https://candor-mutual.vercel.app |
 | README with setup instructions | ✅ | [Setup & Run Locally](#setup--run-locally) |
@@ -77,6 +77,22 @@ Group `Candor Demo Fall 2026`. Every transaction below can be checked on the Pre
 curl -s https://indexer.preprod.midnight.network/api/v4/graphql -H 'content-type: application/json' \
   -d '{"query":"{ contractAction(address: \"33d0aa8d5345780253c02237c0320c81ed982215f7751001003d1e452df7e135\") { __typename transaction { hash block { height } } } }"}'
 ```
+
+### Group recorded in the demo video
+
+The demo video runs the whole flow live on a second group, `Dorm B Fall 2026` at `2f61213dacf07eddd0ebecda2cf6d05de19f49529e10f46f25ba34a50550e124`. Ava and Liam are demo identities created by the author for the recording.
+
+| Step | Circuit | Transaction | Block | Time (UTC) |
+| --- | --- | --- | --- | --- |
+| Deploy | `constructor` | `1f6ad50bc55be04e4a8ea36d357cb6429bb763156fec4a621ec5ce66569b7ba8` | 2718176 | 2026-09-26 12:45:30 |
+| Invite 1 | `invite` | `e97c72c94b0c5574990660f52bc3c9f08cd744b1e0c80e59ba5c606d583e9205` | 2718183 | 2026-09-26 12:46:12 |
+| Invite 2 | `invite` | `ff5a9cc6e0f944caa7e5879cb11e673383096fa62e05ed09671ed893578d708c` | 2718188 | 2026-09-26 12:46:42 |
+| Ava joins | `join` | `b8f7b23f0dea751eea59327641ea814d218a67541dfb4ae18adfc5affa447205` | 2718195 | 2026-09-26 12:47:24 |
+| Liam joins | `join` | `715c94557d24535ee28ae491cb33a73f9d643d69a75dc4999ad1301ba1642180` | 2718210 | 2026-09-26 12:48:54 |
+| Liam picks Ava | `choose` | `eb5b885a8a1d383ac196c803b42e5c3c876fc1463687e3800bfc2f3061c51afb` | 2718218 | 2026-09-26 12:49:42 |
+| Ava picks Liam, match opens | `choose` | `eb437025abae13abff09e92b44ddb9adacd695eb6951f39bb42f28aaf34a58c7` | 2718229 | 2026-09-26 12:50:48 |
+
+The match transaction on Night Scan: https://explorer.preprod.midnight.network/transactions/eb437025abae13abff09e92b44ddb9adacd695eb6951f39bb42f28aaf34a58c7
 
 The same record is kept in [`deployments/preprod.json`](deployments/preprod.json).
 

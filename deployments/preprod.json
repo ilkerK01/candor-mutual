@@ -58,5 +58,54 @@
     "count": 2
   },
   "indexer": "https://indexer.preprod.midnight.network/api/v4/graphql",
-  "liveDemo": "https://candor-mutual.vercel.app/?group=33d0aa8d5345780253c02237c0320c81ed982215f7751001003d1e452df7e135"
+  "liveDemo": "https://candor-mutual.vercel.app/?group=33d0aa8d5345780253c02237c0320c81ed982215f7751001003d1e452df7e135",
+  "videoGroup": {
+    "contractAddress": "2f61213dacf07eddd0ebecda2cf6d05de19f49529e10f46f25ba34a50550e124",
+    "groupName": "Dorm B Fall 2026",
+    "note": "recorded live in the demo video; Ava and Liam are demo identities created by the author",
+    "transactions": [
+      {
+        "step": "deploy",
+        "txHash": "1f6ad50bc55be04e4a8ea36d357cb6429bb763156fec4a621ec5ce66569b7ba8",
+        "block": 2718176,
+        "timestampUtc": "2026-09-26T12:45:30Z"
+      },
+      {
+        "step": "invite",
+        "txHash": "e97c72c94b0c5574990660f52bc3c9f08cd744b1e0c80e59ba5c606d583e9205",
+        "block": 2718183,
+        "timestampUtc": "2026-09-26T12:46:12Z"
+      },
+      {
+        "step": "invite",
+        "txHash": "ff5a9cc6e0f944caa7e5879cb11e673383096fa62e05ed09671ed893578d708c",
+        "block": 2718188,
+        "timestampUtc": "2026-09-26T12:46:42Z"
+      },
+      {
+        "step": "join (Ava)",
+        "txHash": "b8f7b23f0dea751eea59327641ea814d218a67541dfb4ae18adfc5affa447205",
+        "block": 2718195,
+        "timestampUtc": "2026-09-26T12:47:24Z"
+      },
+      {
+        "step": "join (Liam)",
+        "txHash": "715c94557d24535ee28ae491cb33a73f9d643d69a75dc4999ad1301ba1642180",
+        "block": 2718210,
+        "timestampUtc": "2026-09-26T12:48:54Z"
+      },
+      {
+        "step": "choose (Liam picks Ava)",
+        "txHash": "eb5b885a8a1d383ac196c803b42e5c3c876fc1463687e3800bfc2f3061c51afb",
+        "block": 2718218,
+        "timestampUtc": "2026-09-26T12:49:42Z"
+      },
+      {
+        "step": "choose (Ava picks Liam, match)",
+        "txHash": "eb437025abae13abff09e92b44ddb9adacd695eb6951f39bb42f28aaf34a58c7",
+        "block": 2718229,
+        "timestampUtc": "2026-09-26T12:50:48Z"
+      }
+    ]
+  }
 }
