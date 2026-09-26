@@ -18,7 +18,12 @@ Sealed picks inside verified groups, proven with zero-knowledge on Midnight.</p>
   <a href="https://x.com/candormutual"><img alt="X" src="https://img.shields.io/badge/X-@candormutual-111111?style=flat-square&logo=x"></a>
 </p>
 
-<p align="center"><img src="docs/screenshots/landing.png" alt="Candor landing page" width="860"></p>
+## Demo Video
+
+https://github.com/user-attachments/assets/f96c9bbb-14c2-41de-a2a4-abf7b87a7a32
+
+Two minutes, recorded live on Midnight Preprod: a host deploys a group, two members join and pick each other, the one-sided pick stays invisible, and the match opens for the pair. Proof waits are sped up 12x and marked on screen.
+
 
 Some things are only safe to say when the other person feels the same: *I'd like to work with you on the final project*, *I'd room with you next year*, *I'm sorry, can we fix this?* Saying it first is a risk, so most people never say it.
 
@@ -42,7 +47,7 @@ Built for the Rise In × Midnight **New Moon to Full** program, Level 4. Track: 
 | Usage documentation | ✅ | [docs/USAGE.md](docs/USAGE.md) |
 | CI/CD | ✅ | [GitHub Actions](https://github.com/ilkerK01/candor-mutual/actions/workflows/ci.yml): compile, circuit diff check, 15 tests, type check, web build |
 | Product X profile | ✅ | [@candormutual](https://x.com/candormutual) |
-| Demo video | ⏳ | Added with the Level 4 submission |
+| Demo video | ✅ | [Demo Video](#demo-video), recorded live on Preprod |
 | 15+ meaningful commits | ✅ | 30+ commits on `main` |
 
 ## Live Demo
