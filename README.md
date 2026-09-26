@@ -20,7 +20,7 @@ Sealed picks inside verified groups, proven with zero-knowledge on Midnight.</p>
 
 ## Demo Video
 
-https://github.com/user-attachments/assets/f96c9bbb-14c2-41de-a2a4-abf7b87a7a32
+https://github.com/user-attachments/assets/7d510e22-0ea9-4b70-8e34-70ef179da8e4
 
 Two minutes, recorded live on Midnight Preprod: a host deploys a group, two members join and pick each other, the one-sided pick stays invisible, and the match opens for the pair. Proof waits are sped up 12x and marked on screen.
 
