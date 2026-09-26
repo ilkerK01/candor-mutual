@@ -14,7 +14,7 @@ import { Ico, describeError, shorten, type Notice } from './common';
 
 export type MutualTab = 'group' | 'host' | 'matches';
 
-export const DEMO_GROUP = '';
+export const DEMO_GROUP = '33d0aa8d5345780253c02237c0320c81ed982215f7751001003d1e452df7e135';
 
 const params = () => new URLSearchParams(window.location.search);
 
@@ -44,6 +44,8 @@ const stored = <T,>(key: string, fallback: T): T => {
   }
 };
 
+const picksKey = (secret: Uint8Array, group: string) => `candor-picks-${memberIdOf(secret).slice(0, 16)}-${group}`;
+
 const store = (key: string, value: unknown) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
@@ -65,7 +67,7 @@ export function MutualApp(props: {
   const [group, setGroup] = useState(() => (isContractAddress(readGroupFromUrl()) ? readGroupFromUrl() : ''));
   const [busy, setBusy] = useState<string | null>(null);
   const [notice, setNotice] = useState<Notice>(null);
-  const [picked, setPicked] = useState<string[]>(() => stored(`candor-picks-${readGroupFromUrl()}`, []));
+  const [picked, setPicked] = useState<string[]>(() => stored(picksKey(secret, readGroupFromUrl()), []));
   const [invites, setInvites] = useState<string[]>(() => stored(`candor-invites-${readGroupFromUrl()}`, []));
   const apiRef = useRef<{ address: string; api: MutualAPI } | null>(null);
 
@@ -84,7 +86,7 @@ export function MutualApp(props: {
     apiRef.current = null;
     setGroup(clean);
     setGroupInput(clean);
-    setPicked(stored(`candor-picks-${clean}`, []));
+    setPicked(stored(picksKey(secret, clean), []));
     setInvites(stored(`candor-invites-${clean}`, []));
     writeGroupToUrl(clean);
     setNotice(null);
@@ -167,7 +169,7 @@ export function MutualApp(props: {
         const txId = await (await groupApi()).choose(member.key);
         setPicked((prev) => {
           const next = [...new Set([...prev, member.id])];
-          store(`candor-picks-${group}`, next);
+          store(picksKey(secret, group), next);
           return next;
         });
         return txId;

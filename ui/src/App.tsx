@@ -228,7 +228,7 @@ export default function App() {
               <div className="cta-row">
                 <button className="btn btn-red" onClick={() => goToApp('host')}>Start a group</button>
                 {DEMO_GROUP && (
-                  <a className="btn btn-line" href={`?group=${DEMO_GROUP}`}>Try the demo group</a>
+                  <a className="btn btn-line" href={`?group=${DEMO_GROUP}#app`}>Try the demo group</a>
                 )}
               </div>
             </div>
