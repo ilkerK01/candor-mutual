@@ -18,7 +18,11 @@ Sealed picks inside verified groups, proven with zero-knowledge on Midnight.</p>
 
 Some things are only safe to say when the other person feels the same: *I'd like to work with you on the final project*, *I'd room with you next year*, *I'm sorry, can we fix this?* Saying it first is a risk, so most people never say it.
 
-Candor removes the risk. Inside a verified group (a class, a dorm, a team) each member can privately pick the people they would say yes to. If two people pick each other, both see the match. If a pick is not returned, it stays sealed forever: the person who was picked, the host and everyone reading the chain learn nothing.
+**The only cost is the first step. Candor makes it free.**
+
+Inside a verified group (a class, a dorm, a team) each member can privately pick the people they would say yes to. If two people pick each other, both see the match. If a pick is not returned, it stays sealed forever: the person who was picked, the host and everyone reading the chain learn nothing.
+
+> Go first without going first. No risk in asking, no trace if it's not.
 
 Built for the Rise In × Midnight **New Moon to Full** program, Level 4. Track: *Consumer & Social*.
 
